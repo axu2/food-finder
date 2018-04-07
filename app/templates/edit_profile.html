@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <!--<h1>Edit Profile</h1>-->
+    <div class="row">
+      <div>
+      {{ wtf.quick_form(form) }}
+      </div>
+    </div>
+
+    <p></p>
+
+    <div class="row">
+    	  <div class="list-group">
+    	    {% for pref in prefs %}
+    	    <a class="list-group-item">
+            <form action='\r' method='POST'>
+              <input type="hidden" name="food" value="{{ pref }}">
+              <button class="close" type="submit button" > &times;</button>
+            </form> <h4>{{ pref }}</h4>
+          </a>
+    	    {% else %}
+    	    <a class="list-group-item">No food preferences have been submitted</a>
+    	    {% endfor %}
+  	    </div>
+  	  </div>
+
+{% endblock %}
