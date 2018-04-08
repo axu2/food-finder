@@ -20,37 +20,50 @@ dinnerListList = l[2]
 days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
         'Saturday', 'Sunday']
 
+days = [day + ": \n" for day in days]
+
 halls = ['Butler', 'CJL', 'Whitman', 'Roma', 'Forbes', 'Grad']
 
 now = datetime.now()
 lastDate = now.weekday()
 week = [days[(lastDate + i) % 7] for i in range(7)]
 
+def compose_email(matches):
+    text = "Your weekly dinner meals digest:\n\n"
+    for i, day in enumerate(matches):
+        if day:
+            text += week[i]
+            for food, hall in day:
+                text += food + " in " + hall + "\n"
+            text += "\n"
+    text += "Best,\n\nAlex\n\nhttp://menu-alerts.herokuapp.com/"
+
+    return text
+
+
 for user in User.objects():
-    email = []
+    matches = [[] for i in range(7)]
     for j, dinnerList in enumerate(dinnerListList): #each day
         for i, hall in enumerate(dinnerList): #each hall
             for food in hall:
-                if food['item'] in user.prefs:
-                    email.append(week[j] + ": " + food['item'] + " in " + halls[i])
-        if email:
-            email.append('\n')
-
-    if email:
-        text = "Your Food Alerts for the week:\n\n"
-        text += "\n".join(email)
-        text += "\n\nBest,\n\nMenu Alerts\n\n"
-        text += "https://menu-alerts.herokuapp.com/admin"
+                for pref in user.prefs:
+                    if pref.lower() in food['item'].lower():
+                        matches[j].append((food['item'], halls[i]))
+    #print(matches)
+    if matches != [[] for i in range(7)]:
+        text = compose_email(matches)
+        print(text + "\n")
 
         message = emails.html(text=text,
                               subject='Meals Mail',
                               mail_from='tigermenu@gmail.com')
+
         smtp = {'host':'smtp.googlemail.com',
                 'port': 465,
                 'ssl': True,
                 'user': 'tigermenu',
                 'password': os.getenv('MAIL_PASSWORD')}
 
-        r = message.send(to=user.email, smtp=smtp)
+        #r = message.send(to=user.email, smtp=smtp)
 
-        assert r.status_code == 250
+        #assert r.status_code == 250

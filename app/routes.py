@@ -24,7 +24,7 @@ def edit_profile():
     if form.validate_on_submit():
         food = form.food.data
         form.food.data = None
-        user.prefs.append(food)
+        user.prefs.append(food.lower())
         user.save()
         return redirect(url_for('edit_profile'))
         #flash("New entry added!", "success")
