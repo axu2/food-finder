@@ -52,7 +52,6 @@ for user in User.objects():
     #print(matches)
     if matches != [[] for i in range(7)]:
         text = compose_email(matches)
-        print(text + "\n")
 
         message = emails.html(text=text,
                               subject='Meals Mail',
@@ -64,6 +63,6 @@ for user in User.objects():
                 'user': 'tigermenu',
                 'password': os.getenv('MAIL_PASSWORD')}
 
-        #r = message.send(to=user.email, smtp=smtp)
+        r = message.send(to=user.email, smtp=smtp)
 
-        #assert r.status_code == 250
+        assert r.status_code == 250
