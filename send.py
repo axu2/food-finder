@@ -5,12 +5,12 @@ import requests
 from mongoengine import connect
 from app.models import User
 from app import MONGODB_URI
-from app.compose import compose_email
+from app.compose import compose_email, getMatches
 
 connect("users", host=MONGODB_URI)
 
-
-    #print(matches)
+for user in User.objects():
+    matches = getMatches(user)
     if matches != [[] for i in range(7)]:
         text = compose_email(matches)
 
@@ -23,7 +23,6 @@ connect("users", host=MONGODB_URI)
                 'ssl': True,
                 'user': 'tigermenu',
                 'password': os.getenv('MAIL_PASSWORD')}
-        print(text + '\n')
-        #r = message.send(to=user.email, smtp=smtp)
+        r = message.send(to=user.email, smtp=smtp)
 
-        #assert r.status_code == 250
+        assert r.status_code == 250
