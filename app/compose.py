@@ -15,7 +15,7 @@ def compose_email(matches):
             for food, hall in day:
                 text += food + " in " + hall + "\n"
             text += "\n"
-    text += "Best,\n\nAlex\n\nhttp://menu-alerts.herokuapp.com/"
+    text += "Best,\n\nTigerMenus\n\nhttp://menu-alerts.herokuapp.com/"
 
     return text
 
