@@ -12,7 +12,9 @@ def getUser(netid):
     if users:
         user = User.objects(email=email).first()
     else:
-        user = User(email=email).save()
+        user = User(email=email)
+        user.prefs.append('chicken parm')
+        user.save()
     return user
 
 
