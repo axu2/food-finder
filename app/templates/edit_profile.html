@@ -13,13 +13,18 @@
     <p></p>
 
     <div class="row">
-    	  <div class="list-group">
+        <div class="list-group col-xs-6">
+          <pre>{{ email }}</pre>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScAUuEJnrBiosxmRk6zBu5_Q2y2xLcAlzG-gIr1o4FpR6NHfA/viewform?usp=sf_link">Feedback</a>
+        </div>
+
+    	  <div class="list-group col-xs-6">
     	    {% for pref in prefs %}
     	    <a class="list-group-item">
             <form action='\r' method='POST'>
               <input type="hidden" name="food" value="{{ pref }}">
               <button class="close" type="submit button" > &times;</button>
-            </form> <h4>{{ pref }}</h4>
+            </form> <h5>{{ pref }}</h5>
           </a>
     	    {% else %}
     	    <a class="list-group-item">No food preferences have been submitted</a>

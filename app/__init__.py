@@ -24,6 +24,8 @@ db = MongoEngine(app)
 
 from app.models import User
 admin = Admin(app, 'TigerMenu Alerts')
-admin.add_view(ModelView(User))
+if not os.getenv('TZ'):
+    admin.add_view(ModelView(User))
+    #admin panel only on local dev
 
 from app import routes

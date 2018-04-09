@@ -3,6 +3,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_cas import login_required
 from app.models import User
 from app.forms import AddFoodForm
+from app.compose import getMatches, compose_email
 
 def getUser(netid):
     email = netid + '@princeton.edu'
@@ -29,9 +30,11 @@ def edit_profile():
         return redirect(url_for('edit_profile'))
         #flash("New entry added!", "success")
 
+    matches = getMatches(user)
+    email = compose_email(matches)
 
     return render_template('edit_profile.html', prefs=user.prefs,
-        form=form)
+        form=form, email=email)
 
 @app.route('/r', methods=['POST'])
 def r():
