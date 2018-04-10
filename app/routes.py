@@ -25,11 +25,14 @@ def edit_profile():
 
     form = AddFoodForm()
     if form.validate_on_submit():
-        food = form.food.data
+        food = form.food.data.lower()
         form.food.data = None
-        if food.lower() not in user.prefs:
-            user.prefs.append(food.lower())
-            user.save()
+        if food not in user.prefs:
+            if len(food) > 40:
+                flash("pls don't spam", "error")
+            else:
+                user.prefs.append(food)
+                user.save()
         return redirect(url_for('edit_profile'))
         #flash("New entry added!", "success")
 
