@@ -14,6 +14,8 @@ def getUser(netid):
     else:
         user = User(email=email)
         user.prefs.append('chicken parm')
+        user.prefs.append('dim sum')
+        user.prefs.append('egg roll')
         user.save()
     return user
 
