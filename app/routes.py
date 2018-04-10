@@ -27,8 +27,9 @@ def edit_profile():
     if form.validate_on_submit():
         food = form.food.data
         form.food.data = None
-        user.prefs.append(food.lower())
-        user.save()
+        if food.lower() not in user.prefs:
+            user.prefs.append(food.lower())
+            user.save()
         return redirect(url_for('edit_profile'))
         #flash("New entry added!", "success")
 
@@ -43,7 +44,8 @@ def r():
     user = getUser(cas.username)
 
     food = request.form['food']
-    user.prefs.remove(food)
-    user.save()
+    if food in user.prefs:
+        user.prefs.remove(food)
+        user.save()
 
     return redirect(url_for('edit_profile'))
