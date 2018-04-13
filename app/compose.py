@@ -22,7 +22,7 @@ def compose_email(matches):
                         text += food + " in " + hall + "\n"
                     text += "\n"
 
-    text += "Best,\n\nAlex\n\nhttp://menu-alerts.herokuapp.com/"
+    text += "Best,\n\nAlex Xu '19\n\nhttp://menu-alerts.herokuapp.com/"
 
     return text
 
