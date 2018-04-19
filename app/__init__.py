@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, url_for
 from flask_cas import CAS
 from flask_admin import Admin
 from flask_bootstrap import Bootstrap
@@ -7,6 +7,10 @@ from flask_mongoengine import MongoEngine
 from flask_admin.contrib.mongoengine import ModelView
 
 app = Flask(__name__)
+
+app.jinja_env.auto_reload = True
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY') or 'you-will-never-guess'
 app.config['CAS_SERVER'] = 'https://fed.princeton.edu/cas'
 app.config['CAS_AFTER_LOGIN'] = '/'
@@ -24,8 +28,11 @@ db = MongoEngine(app)
 
 from app.models import User
 admin = Admin(app, 'TigerMenu Alerts')
-if not os.getenv('TZ'):
-    admin.add_view(ModelView(User))
-    #admin panel only on local dev
+
+class UserView(ModelView):
+    def is_accessible(self):
+        return cas.username == "ax2"
+
+admin.add_view(UserView(User))
 
 from app import routes
