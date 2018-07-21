@@ -47,8 +47,8 @@ def getMatches(user):
             for i, hall in enumerate(mealList): #each hall
                 for food in hall:
                     for pref in user.prefs:
-                        if pref.lower() in food['item'].lower():
-                            p = (food['item'], halls[i])
+                        if pref.lower() in food.lower():
+                            p = (food, halls[i])
                             if p not in matches[j][k]:
                                 matches[j][k].append(p)
 
